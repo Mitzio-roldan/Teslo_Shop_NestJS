@@ -1,6 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, Tree } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn, Tree, ManyToOne } from 'typeorm';
+import { ProductImage } from './product-image.entity';
+import { User } from '../../auth/entities/auth.entity';
 
-@Entity()
+@Entity({name: 'product_images'})
 export class Product {
 
     @PrimaryGeneratedColumn('uuid')
@@ -45,6 +47,20 @@ export class Product {
         default:[]
     })
     tags: string[]
+
+    @OneToMany(
+        ()=> ProductImage,
+        (productImage) => productImage.product,
+        {cascade:true, eager: true}
+    )
+    images?: ProductImage[]
+
+    @ManyToOne(
+        () => User,
+        (user) => user.product,
+        {eager: true}
+    )
+    user:User
 
 
 
