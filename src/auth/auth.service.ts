@@ -76,5 +76,16 @@ export class AuthService {
 
   }
 
+  async checkAuthStatus(user: User){
+    if (user) {
+      const token = await this.getJwtToken({id: user.id})
+      
+      return {...user,
+        token: this.getJwtToken({id: user.id})
+      }
+    }
+     throw new UnauthorizedException('User not logged')
+  }
+
   
 }
